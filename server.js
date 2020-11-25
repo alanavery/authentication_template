@@ -2,6 +2,7 @@
 let express = require('express');
 let layouts = require('express-ejs-layouts');
 let session = require('express-session');
+let morgan = require('morgan');
 require('dotenv').config();
 
 // Import API modules
@@ -16,6 +17,7 @@ let app = express();
 // Middleware
 app.set('view engine', 'ejs');
 app.use(layouts);
+app.use(morgan('dev'));
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
@@ -32,7 +34,7 @@ app.use('/trips', require('./controllers/trips'));
 
 
 
-// Home route (GET /)
+// Home route: GET /
 app.get('/', (req, res) => {
   res.render('index');
 });
