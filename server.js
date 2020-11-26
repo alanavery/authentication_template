@@ -18,6 +18,7 @@ let app = express();
 app.set('view engine', 'ejs');
 app.use(layouts);
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(session({
   secret: SESSION_SECRET,
