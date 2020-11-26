@@ -25,6 +25,7 @@ app.use(session({
 }));
 
 // Controllers
+app.use('/auth', require('./controllers/auth'));
 app.use('/trips', require('./controllers/trips'));
 
 

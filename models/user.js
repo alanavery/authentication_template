@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   user.init({
+    // Validate user's first and last name, email and password
     firstName: {
       type: DataTypes.STRING,
       validate: {
@@ -48,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   }, {
+    // Hash user's password before saving it to database
     hooks: {
       beforeCreate: pendingUser => {
         if (pendingUser && pendingUser.password) {
@@ -59,9 +61,11 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'user',
   });
+  // Create method to validate passwords
   user.prototype.validPassword = submittedPassword => {
     return bcrypt.compareSync(submittedPassword, this.password);
   };
+  // Create method to protect password data
   user.prototype.toJSON = () => {
     let userData = this.get();
     delete userData.password;
