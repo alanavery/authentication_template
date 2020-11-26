@@ -3,6 +3,7 @@ let express = require('express');
 let layouts = require('express-ejs-layouts');
 let session = require('express-session');
 let morgan = require('morgan');
+let passport = require('./config/pp-config');
 require('dotenv').config();
 
 // Import API modules
@@ -20,11 +21,17 @@ app.use(layouts);
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
+
+// Set up session module
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Controllers
 app.use('/auth', require('./controllers/auth'));

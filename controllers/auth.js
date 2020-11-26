@@ -1,6 +1,7 @@
 // Import modules
 let router = require('express').Router();
 let db = require('../models');
+let passport = require('../config/pp-config');
 
 // Route: GET /auth/signup
 router.get('/signup', (req, res) => {
@@ -12,6 +13,12 @@ router.get('/signup', (req, res) => {
 router.get('/login', (req, res) => {
   console.log(req.session);
   res.render('auth/login');
+});
+
+// Route: GET /auth/logout
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
 });
 
 // Route: POST /auth/signup
@@ -27,7 +34,9 @@ router.post('/signup', async (req, res) => {
     });
     if (user[1]) {
       console.log(`An account for ${user[0].firstName} was created.`);
-      res.redirect('/');
+      passport.authenticate('local', {
+        successRedirect: '/'
+      })(req, res);
     } else {
       console.log('Email already exists.');
       res.redirect('/auth/signup');
@@ -39,6 +48,10 @@ router.post('/signup', async (req, res) => {
 });
 
 // Route: POST /auth/login
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/auth/login'
+}));
 
 // Export module
 module.exports = router;
