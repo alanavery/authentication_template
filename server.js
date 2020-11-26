@@ -17,6 +17,7 @@ let app = express();
 // Middleware
 app.set('view engine', 'ejs');
 app.use(layouts);
+app.use(express.static('public'));
 app.use(morgan('dev'));
 app.use(session({
   secret: SESSION_SECRET,
