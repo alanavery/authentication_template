@@ -4,6 +4,7 @@ let layouts = require('express-ejs-layouts');
 let session = require('express-session');
 let morgan = require('morgan');
 let passport = require('./config/pp-config');
+let flash = require('connect-flash');
 require('dotenv').config();
 
 // Import API modules
@@ -32,6 +33,9 @@ app.use(session({
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Add connect-flash
+app.use(flash());
 
 // Controllers
 app.use('/auth', require('./controllers/auth'));
