@@ -25,7 +25,7 @@ router.get('/logout', (req, res) => {
 router.post('/signup', async (req, res) => {
   try {
     let user = await db.user.findOrCreate({
-      where: { email: req.body.email },
+      where: { email: req.body.username },
       defaults: {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -35,7 +35,8 @@ router.post('/signup', async (req, res) => {
     if (user[1]) {
       console.log(`An account for ${user[0].firstName} was created.`);
       passport.authenticate('local', {
-        successRedirect: '/'
+        successRedirect: '/',
+        failureRedirect: '/auth/signup'
       })(req, res);
     } else {
       console.log('Email already exists.');
