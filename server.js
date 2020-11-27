@@ -37,23 +37,10 @@ app.use(passport.session());
 app.use('/auth', require('./controllers/auth'));
 app.use('/trips', require('./controllers/trips'));
 
-
-
-
-
-
-
-
 // Home route: GET /
 app.get('/', (req, res) => {
   res.render('index');
 });
-
-
-
-
-
-
 
 // Instruct app to listen for requests
 let PORT = process.env.PORT || 3000;
@@ -61,4 +48,5 @@ let server = app.listen(PORT, () => {
   console.log(`The server is up and running on PORT ${PORT}.`);
 });
 
-// module.exports = server;
+// Export server for testing
+module.exports = server;

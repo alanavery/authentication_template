@@ -62,13 +62,13 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'user',
   });
   // Create method to validate passwords
-  user.prototype.validPassword = submittedPassword => {
+  user.prototype.validPassword = function (submittedPassword) {
     let correctPassword = bcrypt.compareSync(submittedPassword, this.password);
     console.log('Inside of validPassword.', correctPassword);
     return correctPassword;
   };
   // Create method to protect password data
-  user.prototype.toJSON = () => {
+  user.prototype.toJSON = function () {
     console.log('Inside of toJSON.');
     let userData = this.get();
     delete userData.password;

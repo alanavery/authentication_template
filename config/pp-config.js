@@ -33,42 +33,42 @@ passport.deserializeUser(async (id, done) => {
 //   } catch (cb) { }
 // }));
 
-// passport.use(new LocalStrategy(
-//   async (username, password, done) => {
-//     try {
-//       let user = await db.user.findOne({ where: { email: username } });
-//       if (!user) {
-//         console.log('Incorrect username.');
-//         return done(null, false, { message: 'Incorrect username.' });
-//       }
-//       if (!user.validPassword(password)) {
-//         console.log('Incorrect password.');
-//         return done(null, false, { message: 'Incorrect password.' });
-//       }
-//       return done(null, user);
-//     } catch (err) {
-//       return done(err);
-//     }
-//   }
-// ));
-
 passport.use(new LocalStrategy(
-  (username, password, done) => {
-    db.user.findOne({
-      where: { email: username }
-    }).then(user => {
+  async (username, password, done) => {
+    try {
+      let user = await db.user.findOne({ where: { email: username } });
       if (!user) {
         console.log('Incorrect username.');
-        done(null, false);
+        return done(null, false, { message: 'Incorrect username.' });
       }
       if (!user.validPassword(password)) {
-        console.log('Inccorect password.');
-        done(null, false);
+        console.log('Incorrect password.');
+        return done(null, false, { message: 'Incorrect password.' });
       }
-      done(null, user);
-    }).catch(done);
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
   }
 ));
+
+// passport.use(new LocalStrategy(
+//   (username, password, done) => {
+//     db.user.findOne({
+//       where: { email: username }
+//     }).then(user => {
+//       if (!user) {
+//         console.log('Incorrect username.');
+//         done(null, false);
+//       }
+//       if (!user.validPassword(password)) {
+//         console.log('Inccorect password.');
+//         done(null, false);
+//       }
+//       done(null, user);
+//     }).catch(done);
+//   }
+// ));
 
 // Export module
 module.exports = passport;
