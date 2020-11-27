@@ -5,6 +5,7 @@ let session = require('express-session');
 let morgan = require('morgan');
 let passport = require('./config/pp-config');
 let flash = require('connect-flash');
+let isLoggedIn = require('./middleware/is-logged-in');
 require('dotenv').config();
 
 // Import API modules
@@ -37,16 +38,16 @@ app.use(passport.session());
 // Add connect-flash
 app.use(flash());
 
-// Controllers
-app.use('/auth', require('./controllers/auth'));
-app.use('/trips', require('./controllers/trips'));
-
 // Custom middleware
 app.use((req, res, next) => {
   res.locals.alerts = req.flash();
   res.locals.currentUser = req.user;
   next();
 });
+
+// Controllers
+app.use('/auth', require('./controllers/auth'));
+app.use('/trips', isLoggedIn, require('./controllers/trips'));
 // ——————————————————————————————
 
 // Home route: GET /

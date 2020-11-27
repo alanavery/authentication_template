@@ -5,7 +5,6 @@ let passport = require('../config/pp-config');
 
 // Route: GET /auth/signup
 router.get('/signup', (req, res) => {
-  console.log(req.session);
   res.render('auth/signup');
 });
 
@@ -21,19 +20,16 @@ router.post('/signup', async (req, res) => {
       }
     });
     if (user[1]) {
-      // console.log(`An account for ${user[0].firstName} was created.`);
       passport.authenticate('local', {
         successRedirect: '/',
         successFlash: 'Account created.',
         failureRedirect: '/auth/signup'
       })(req, res);
     } else {
-      // console.log('Invalid name, email and/or password.');
       req.flash('error', 'Invalid name, email and/or password.');
       res.redirect('/auth/signup');
     }
   } catch (error) {
-    // console.log(`An error occurred: ${error.message}`);
     req.flash('error', `An error occurred: ${error.message}`);
     res.redirect('/auth/signup');
   }
@@ -41,7 +37,6 @@ router.post('/signup', async (req, res) => {
 
 // Route: GET /auth/login
 router.get('/login', (req, res) => {
-  console.log(req.session);
   res.render('auth/login');
 });
 
