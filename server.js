@@ -16,7 +16,7 @@ let SESSION_SECRET = process.env.SESSION_SECRET;
 // Initialize app
 let app = express();
 
-// Middleware
+// Middleware ——————————————————————————————
 app.set('view engine', 'ejs');
 app.use(layouts);
 app.use(express.static('public'));
@@ -40,6 +40,14 @@ app.use(flash());
 // Controllers
 app.use('/auth', require('./controllers/auth'));
 app.use('/trips', require('./controllers/trips'));
+
+// Custom middleware
+app.use((req, res, next) => {
+  res.locals.alerts = req.flash();
+  res.locals.currentUser = req.user;
+  next();
+});
+// ——————————————————————————————
 
 // Home route: GET /
 app.get('/', (req, res) => {
