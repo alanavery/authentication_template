@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
   // Create method to validate passwords
   user.prototype.validPassword = function (submittedPassword) {
     let correctPassword = bcrypt.compareSync(submittedPassword, this.password);
-    console.log('Inside of validPassword.', correctPassword);
+    console.log(`Password is valid: ${correctPassword}`);
     return correctPassword;
   };
   // Create method to protect password data

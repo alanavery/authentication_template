@@ -119,4 +119,18 @@ describe('User Instance Methods', () => {
       });
     });
   });
+
+  describe('toJSON', () => {
+    it('should return user without password field', done => {
+      db.user.findOne().then(user => {
+        if (user.toJSON().password === undefined) {
+          done();
+        } else {
+          done(user);
+        }
+      }).catch(error => {
+        done(error);
+      });
+    });
+  });
 });
